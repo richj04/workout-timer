@@ -4,12 +4,20 @@ function App() {
   // ========== STATE (DATA) ==========
   const [GoldTotal, SetGoldTotal] = useState(0);
   let goldMultiplier = 1;
-  const shapes = ["circle", "triangle", "square", "pentagon", "star"];
+  const shapes = ["circle ", "triangle ", "square ", "pentagon ", "star "];
   const [RolledShapes, SetRolledShapes] = useState("Roll Some Shapes!");
+  
   const BasicLootboxPrice = 100;
   const AdvancedLootboxPrice = 1000;
+  const allBadges = [
+    {
+      shape: "circle",
+      layers: 1
+    }
+  ];
+  const [DisplayBadge, setDisplayBadge] = useState(allBadges);
   
-  
+ 
   // ========== FUNCTIONS (ACTIONS) ==========
   //calculates workoutlength and converts to gold
   function workoutToGold(workoutLength){
@@ -23,14 +31,15 @@ function App() {
   function rollShapes(luck){
 
     const newShapes = [];
+    const counter = {};
     //This algorithm sets up the random chances
     for (let i = 0; i < 5; i++){
       const shapeChance = {
-        circle: 25,
-        triangle: 25,
-        square: 25,
-        pentagon: 15,
-        star: 10
+        circle : 25,
+        triangle : 25,
+        square : 25,
+        pentagon : 15,
+        star : 10
       };
 
       if (i != 0){
@@ -50,12 +59,32 @@ function App() {
       for (let shape in shapeRange){
         if(shapeRange[shape] >= randomInt){
           newShapes.push(shape);
+          if (shape in counter){
+            counter[shape] += 1;
+          }
+          else{
+            counter[shape] = 1;
+          }
           break
         }
       }
       
     }
     SetRolledShapes(newShapes);
+
+    //Find Final Badge Layout
+    let max = 0;
+    let finalShape = "";
+    let ringCount = 0;
+    for (let shape in counter){
+      if (counter[shape] > max){
+        finalShape = shape;
+        ringCount = counter[shape];
+        max = counter[shape];
+      }
+    }
+
+    
   }
 
   
@@ -69,8 +98,11 @@ function App() {
         Click me 15 min workout length
       </button>
       <p>{RolledShapes}</p>
-      <button onClick = {() => rollShapes(10)}>
-        ROLL THE SHAPES
+      <button onClick = {() => rollShapes(0.5)}>
+        BASIC LOOTBOX
+      </button>
+      <button onClick = {() => rollShapes(12)}>
+        GOD LOOTBOX
       </button>
 
    
