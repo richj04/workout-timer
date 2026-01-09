@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { legendary, epic, rare, common } from './data/layerDesigns';
 
 function App() {
   // ========== STATE (DATA) ==========
@@ -9,13 +10,27 @@ function App() {
   
   const BasicLootboxPrice = 100;
   const AdvancedLootboxPrice = 1000;
-  const allBadges = [
-    {
+  const defaultBadge = {
       shape: "circle",
       layers: 1
-    }
-  ];
-  const [DisplayBadge, setDisplayBadge] = useState(allBadges);
+    };
+  
+  const [DisplayBadge, setDisplayBadge] = useState([]);
+
+  //values for layer rarity
+  const rarityRangeBasic = {
+    common: 60,
+    rare: 90, 
+    epic: 99,
+    legendary: 100
+  };
+
+  const rarityRangeAdvanced = {
+    common: 10,
+    rare: 60,
+    epic: 90,
+    legendary: 100
+  };
   
  
   // ========== FUNCTIONS (ACTIONS) ==========
@@ -28,7 +43,7 @@ function App() {
   }
 
   //Rolls 5 shapes based on a luck modifier
-  function rollShapes(luck){
+  function rollShapes(luck, chestType){
 
     const newShapes = [];
     const counter = {};
@@ -84,10 +99,40 @@ function App() {
       }
     }
 
+    //Second set of roll of layer rarities
+    let layerDesigns = [];
+    for (let i = 0; i < ringCount; i++){
+      let randomInt = Math.floor(Math.random() * 100);
+
+      if(chestType === "basic"){
+        for(let range in rarityRangeBasic){
+          if(rarityRangeBasic[range] >= randomInt){
+            layerDesigns.push(range);
+            break
+          }
+        }
+      }else if(chestType === "advanced"){
+        for(let range in rarityRangeAdvanced){
+          if(rarityRangeAdvanced[range] >= randomInt){
+            layerDesigns.push(range);
+            break
+          }
+        }
+      }
+
+    }
+
+    const newBadge = {
+      shape: finalShape,
+      layers: ringCount,
+      layerDesign: layerDesigns
+    };
+
+    setDisplayBadge([...DisplayBadge, newBadge]);
+
     
   }
 
-  
   // ========== DISPLAY (JSX) ==========
   return (
     <div style={{ padding: '20px' }}>
@@ -98,12 +143,24 @@ function App() {
         Click me 15 min workout length
       </button>
       <p>{RolledShapes}</p>
-      <button onClick = {() => rollShapes(0.5)}>
+      <button onClick = {() => rollShapes(0.5, "basic")}>
         BASIC LOOTBOX
       </button>
-      <button onClick = {() => rollShapes(12)}>
+      <button onClick = {() => rollShapes(12, "advanced")}>
         GOD LOOTBOX
       </button>
+
+      <p>All your badges: </p>
+      {DisplayBadge.map((badge, index) => (
+        <div key={index}>
+          <h3>Badge #{index + 1}</h3>
+          <p>Shape: {badge.shape}</p>
+          <p>Rings: {badge.layers}</p>
+          {badge.layerDesign.map((layerRarity, layerIndex) => (
+            <p key={index}>Layer Rarity {layerIndex +1}: {layerRarity}</p>
+          ))}
+        </div>
+      ))}
 
    
     </div>
