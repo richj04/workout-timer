@@ -9,10 +9,10 @@ export function studyTimeToGoldMedium( streak ){
     };
 
     //base gold gives about 100 gold per 30 min study
-    const baseGold = 8.78 * Math.pow(period, 0.7);
+    const baseGold = 9 * Math.pow(period, 0.7);
     const randomMultiplier = Math.random() * 0.5 + 0.9;
     const finalGold = baseGold * streakMultipliers[streak] * randomMultiplier;
-
+    console.log(Math.round(finalGold));
     return Math.round(finalGold);
 }
 
@@ -29,12 +29,12 @@ export function studyTimeToGoldSmall( streak ){
         7: 1.8,
         8: 2.0
     };
-
+    
     //base gold gives about 100 gold per 30 min study
-    const baseGold = 8.78 * Math.pow(period, 0.7);
+    const baseGold = 4 * Math.pow(period, 0.7);
     const randomMultiplier = Math.random() * 0.5 + 0.9;
     const finalGold = baseGold * streakMultipliers[streak] * randomMultiplier;
-
+    console.log(Math.round(finalGold));
     return Math.round(finalGold);
 }
 
@@ -42,14 +42,14 @@ export function studyTimeToGoldLarge( streak ){
     //multiplier handles consecutive studying capping at 4
     const period = 60;
     const streakMultipliers = {
-        1: 1.5,
-        2: 3
+        1: 1.0,
+        2: 2.5
     };
 
     //base gold gives about 100 gold per 30 min study
-    const baseGold = 8.78 * Math.pow(period, 0.7);
+    const baseGold = 20 * Math.pow(period, 0.7);
     const randomMultiplier = Math.random() * 0.5 + 0.9;
     const finalGold = baseGold * streakMultipliers[streak] * randomMultiplier;
-
+    console.log(Math.round(finalGold));
     return Math.round(finalGold);
 }

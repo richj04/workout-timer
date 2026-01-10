@@ -28,14 +28,14 @@ function App() {
     const newStreaks = streakCalculator(streaks, "medium");
     setDisplayStreak(newStreaks.medium);
     setStreaks(newStreaks);
-    setGold(gold + studyTimeToGoldSmall(newStreaks.medium));
+    setGold(gold + studyTimeToGoldMedium(newStreaks.medium));
   }
   //50 min on 10 min off
   function largeStudy(){
     const newStreaks = streakCalculator(streaks, "large");
     setDisplayStreak(newStreaks.large);
     setStreaks(newStreaks);
-    setGold(gold + studyTimeToGoldSmall(newStreaks.large));
+    setGold(gold + studyTimeToGoldLarge(newStreaks.large));
   }
 
   

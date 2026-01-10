@@ -14,8 +14,7 @@ export function streakCalculator ( streaks, studyType ){
 
     //check hit max, if hit max return to 1
     if (newStreaks[studyType] > max_streaks[studyType]){
-        streaks[studyType] = 1;
+        newStreaks[studyType] = 1;
     }
-
     return newStreaks;
 }
