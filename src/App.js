@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { studyTimeToGoldSmall, studyTimeToGoldLarge, studyTimeToGoldMedium } from './utils/goldCalculator';
 import { streakCalculator} from './utils/streakCalculator';
+import { gachaCalculator } from './utils/gachaCalculator';
 
 function App() {
   // ========== STATE ==========
@@ -11,6 +12,7 @@ function App() {
     large: 0
   });
   const [displayStreak, setDisplayStreak] = useState(0);
+  const [allChimera, setAllChimera] = useState([]);
   
   
   // ========== FUNCTIONS ==========
@@ -38,6 +40,22 @@ function App() {
     setGold(gold + studyTimeToGoldLarge(newStreaks.large));
   }
 
+  function buyBasicChest(){
+    if(gold < 100){ return; }
+    
+    setGold(gold - 100);
+    const gachaOutput = gachaCalculator("basic");
+    setAllChimera(prev => [...prev, gachaOutput]);
+    console.log(gachaOutput);
+  }
+  function buyAdvancedChest(){
+    if(gold < 1000){ return; }
+    
+    setGold(gold - 1000);
+    const gachaOutput = gachaCalculator("advanced");
+    setAllChimera(prev => [...prev, gachaOutput]);
+    console.log(gachaOutput);
+  }
   
   
   
@@ -56,6 +74,12 @@ function App() {
       </button>
       <button onClick={() => largeStudy()}>
         click me for 60 min study
+      </button>
+      <button onClick={() => buyBasicChest()}>
+        Click me for basic chest 100 gold
+      </button>
+      <button onClick={() => buyAdvancedChest()}>
+        Click me for basic chest 1000 gold
       </button>
     </div>
   );
