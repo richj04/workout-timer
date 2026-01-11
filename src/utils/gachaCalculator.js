@@ -6,17 +6,33 @@ import { commonEffects, rareEffects, epicEffects, legendaryEffects } from "../da
 
 export function gachaCalculator( chestType ){
     if(chestType === "basic"){
-        rarityOutput = rarityCalculator(basicCrateOdds);
+        const crateOdds = basicCrateOdds;
     }else if(chestType === "advanced"){
-        rarityOutput = rarityCalculator(advancedCrateOdds);
+        const crateOdds = advancedCrateOdds;
     }
+
+    
 
     const newChimera = {};
     const newChimeraSeed = "";
     const newChimeraTitle = "";
     const newChimerName = "";
 
+    function createPart(){
+        const newPart = {
+            species: {},
+            effect: {}
+        }
+        const partSpeciesKey = getRandomKey(speciesData);
+        newPart[species] = speciesData[partSpeciesKey];
+        const rarity = rarityCalculator(crateOdds);
+        
+
+
+    }
+
     const newUpper = {};
     const upperSpeciesKey = getRandomKey(speciesData);
     newUpper = speciesData[upperSpeciesKey];
+    
 }
