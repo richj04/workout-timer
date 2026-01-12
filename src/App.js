@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { studyTimeToGoldSmall, studyTimeToGoldLarge, studyTimeToGoldMedium } from './utils/goldCalculator';
 import { streakCalculator} from './utils/streakCalculator';
 import { gachaCalculator } from './utils/gachaCalculator';
+import HomePage from './pages/HomePage';
 
 function App() {
   // ========== STATE ==========
@@ -56,16 +57,32 @@ function App() {
     setAllChimera(prev => [...prev, gachaOutput]);
     console.log(gachaOutput);
   }
+
+  //PAGE RENDERING LOGIC BELOW
+  let PageComponent;
+  const [currentPage, setCurrentPage] = useState('Home');
+
+  if (currentPage === 'Home') {
+    PageComponent = (
+      <HomePage 
+        username="Richard"
+        gold = {gold}
+        onStartStudy={() => setCurrentPage('Study')}
+      />
+    );
+  }
+  
   
   
   
   // ========== DISPLAY ==========
-  return (
+  /**
+   * return (
     <div style={{ padding: '20px' }}>
       <h1>Evo Study</h1>
       <h2>You have this much: {gold} gold</h2>
       <h2>Your current streak is: {displayStreak}</h2>
-      {/* Your code goes here */}
+      {Your code goes here }
       <button onClick={() => mediumStudy()}>
         click me for 30 min study
       </button>
@@ -82,6 +99,14 @@ function App() {
         Click me for basic chest 1000 gold
       </button>
     </div>
+      );
+      
+   **/
+  return (
+    <div>
+      {PageComponent}
+    </div>
+    
   );
 }
 
