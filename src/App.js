@@ -3,6 +3,7 @@ import { studyTimeToGoldSmall, studyTimeToGoldLarge, studyTimeToGoldMedium } fro
 import { streakCalculator} from './utils/streakCalculator';
 import { gachaCalculator } from './utils/gachaCalculator';
 import HomePage from './pages/HomePage';
+import { seedDecoder } from './utils/seedDecoder';
 
 function App() {
   // ========== STATE ==========
@@ -72,6 +73,7 @@ function App() {
     );
   }
   
+  console.log(seedDecoder("002101001101001101"));
   
   
   
