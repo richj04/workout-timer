@@ -5,16 +5,17 @@ import { speciesData } from "../data/speciesData";
 import { commonEffects, rareEffects, epicEffects, legendaryEffects } from "../data/effectData";
 
 export function gachaCalculator( chestType ){
+    let crateOdds = {};
     if(chestType === "basic"){
-        const crateOdds = basicCrateOdds;
+        crateOdds = basicCrateOdds;
     }else if(chestType === "advanced"){
-        const crateOdds = advancedCrateOdds;
+        crateOdds = advancedCrateOdds;
     }
 
-    const newChimera = [];
-    const newChimeraSeed = "";
-    const newChimeraTitle = "";
-    const newChimeraName = "";
+    let newChimera = [];
+    let newChimeraSeed = "";
+    let newChimeraTitle = "";
+    let newChimeraName = "";
 
     //creates a part with random species and effect
     function createPart(){
@@ -66,6 +67,10 @@ export function gachaCalculator( chestType ){
         }
     }
 
-    
+    return {
+        seed: newChimeraSeed,
+        displayName: `${newChimeraTitle} ${newChimeraName}`, // "Voltage Abyssal North-Wind Lioebraark"
+        chimeraParts: newChimera
+    };
     
 }
