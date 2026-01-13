@@ -2,6 +2,17 @@
 import React from 'react';
 import { FaHome, FaBook, FaStore, FaBoxOpen, FaTrophy, FaCoins } from 'react-icons/fa';
 
+import ChimeraRenderer from '../utils/chimeraRenderer';
+import lionUpper from "../assets/chimera-parts/upper/lion.png";
+import lionMiddle from "../assets/chimera-parts/middle/lion.png";
+import lionLower from "../assets/chimera-parts/lower/lion.png";
+import sharkUpper from "../assets/chimera-parts/upper/shark.png";
+import sharkMiddle from "../assets/chimera-parts/middle/shark.png";
+import sharkLower from "../assets/chimera-parts/lower/shark.png";
+import eagleUpper from "../assets/chimera-parts/upper/eagle.png";
+import eagleMiddle from "../assets/chimera-parts/middle/eagle.png"
+import eagleLower from "../assets/chimera-parts/lower/eagle.png";
+
 // Props: 
 // - username (string)
 // - gold (number)
@@ -13,7 +24,8 @@ export default function HomePage({ username, gold, onStartStudy }) {
       <div className="flex justify-between items-center p-4 bg-white shadow-md">
         {/* Username */}
         <div className="font-semibold text-gray-800">{username}</div>
-
+        {/* App Name */}
+        <h1 className="text-3xl font-bold text-gray-900">Evo Study</h1>
         {/* Gold display */}
         <div className="flex items-center gap-1">
           <FaCoins className="text-yellow-500" />
@@ -22,9 +34,8 @@ export default function HomePage({ username, gold, onStartStudy }) {
       </div>
 
       {/* ===== Main Content ===== */}
-      <div className="flex-1 flex flex-col items-center justify-center p-4 gap-6">
-        {/* App Name */}
-        <h1 className="text-3xl font-bold text-gray-900">Evo Study</h1>
+      <div className="flex-1 flex flex-col items-center justify-center p-7 gap-6">
+        
 
         {/* App Descriptor */}
         <p className="text-gray-600 text-center max-w-xs">
@@ -37,9 +48,13 @@ export default function HomePage({ username, gold, onStartStudy }) {
         </div>
 
         {/* Chimera Display Box */}
-        <div className="w-72 h-72 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
+        <div className="relative w-72 h-[28rem] bg-white border rounded-lg flex items-center justify-center">
           {/* Chimera will render here later */}
-          <span className="text-gray-400">Your Chimera Appears Here</span>
+            <ChimeraRenderer
+                upper={lionUpper}
+                middle={lionMiddle}
+                lower={eagleLower}
+            />
         </div>
 
         {/* Start Studying Button */}

@@ -10,5 +10,8 @@ export const speciesData = {
   "009": { key: "009", data: { name: "Elephant", prefix: "Ele", infix: "ph", suffix: "ant" } },
   "010": { key: "010", data: { name: "Spider", prefix: "Spi", infix: "id", suffix: "der" } },
   "011": { key: "011", data: { name: "Raptor", prefix: "Rap", infix: "pt", suffix: "tor" } },
-  "012": { key: "012", data: { name: "Cobra", prefix: "Cob", infix: "ob", suffix: "ra" } }
+  "012": { key: "012", data: { name: "Cobra", prefix: "Cob", infix: "ob", suffix: "ra" } },
+  "013": { key: "013", data: { name: "Nighthawk", prefix: "ni", infix: "ght", suffix: "hawk"} },
+  "014": { key: "014", data: { name: "Hedgehog", prefix: "hed", infix: "gg", suffix: "hog"} },
+  "015": { key: "403", data: { name: "Panther", prefix: "pan", infix: "th", suffix: "er"} }
 };
