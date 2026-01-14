@@ -1,23 +1,13 @@
 // src/pages/HomePage.jsx
 import React from 'react';
 import { FaHome, FaBook, FaStore, FaBoxOpen, FaTrophy, FaCoins } from 'react-icons/fa';
-
 import ChimeraRenderer from '../utils/chimeraRenderer';
-import lionUpper from "../assets/chimera-parts/upper/lion.png";
-import lionMiddle from "../assets/chimera-parts/middle/lion.png";
-import lionLower from "../assets/chimera-parts/lower/lion.png";
-import sharkUpper from "../assets/chimera-parts/upper/shark.png";
-import sharkMiddle from "../assets/chimera-parts/middle/shark.png";
-import sharkLower from "../assets/chimera-parts/lower/shark.png";
-import eagleUpper from "../assets/chimera-parts/upper/eagle.png";
-import eagleMiddle from "../assets/chimera-parts/middle/eagle.png"
-import eagleLower from "../assets/chimera-parts/lower/eagle.png";
 
 // Props: 
 // - username (string)
 // - gold (number)
 // - onStartStudy (function) -> navigate to Study page
-export default function HomePage({ username, gold, onStartStudy }) {
+export default function HomePage({ username, gold, onStartStudy, seed }) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* ===== Top Bar ===== */}
@@ -51,9 +41,7 @@ export default function HomePage({ username, gold, onStartStudy }) {
         <div className="relative w-72 h-[28rem] bg-white border rounded-lg flex items-center justify-center">
           {/* Chimera will render here later */}
             <ChimeraRenderer
-                upper={lionUpper}
-                middle={lionMiddle}
-                lower={eagleLower}
+                seed={seed}
             />
         </div>
 

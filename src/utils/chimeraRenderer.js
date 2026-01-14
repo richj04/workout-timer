@@ -1,5 +1,13 @@
 import React from "react";
-export default function ChimeraRenderer({ upper, middle, lower}){
+import chimeraAssets from "../utils/AssetLoader";
+
+export default function ChimeraRenderer({ seed }){
+    const upper = chimeraAssets["upper"][seed[0]["sprite"]];
+    const middle = chimeraAssets["middle"][seed[1]["sprite"]];
+    const lower = chimeraAssets["lower"][seed[2]["sprite"]];
+    const label = `${seed[0]["label"]} ${seed[1]["label"]} ${seed[2]["label"]}`;
+    const name = `${seed[0]["namePart"]}${seed[1]["namePart"]}${seed[2]["namePart"]}`
+    console.log(seed);
     return (
         <div className="relative w-full h-full flex flex-col items-center">
             <div className="relative mb-2 w-full flex-1">
@@ -21,8 +29,8 @@ export default function ChimeraRenderer({ upper, middle, lower}){
             </div>
 
             <div className="text-center space-y-1">
-                <h3 className="text-sm font-semibold">Dusty Aura God-Slayer</h3>
-                <h3 className="text-lg font-bold">Eagerrk</h3>
+                <h3 className="text-sm font-semibold">{label}</h3>
+                <h3 className="text-lg font-bold">{name}</h3>
             </div>
         </div>
   );

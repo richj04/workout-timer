@@ -61,7 +61,7 @@ export function seedDecoder( gachaSeed ) {
 
     renderChimera.push({
       type: indexToPart[i],
-      sprite: `${species.data.name.toLowerCase()}_${indexToPart[i]}`, 
+      sprite: `${species.data.name.toLowerCase()}`, 
       namePart: `${speciesName}`,
       label: `${effectName}`,
       rarity: rarity,

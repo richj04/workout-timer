@@ -7,7 +7,7 @@ import { seedDecoder } from './utils/seedDecoder';
 
 function App() {
   // ========== STATE ==========
-  const [gold, setGold] = useState(0);
+  const [gold, setGold] = useState(1000);
   const [streaks, setStreaks] = useState({
     small: 0,
     medium: 0,
@@ -50,6 +50,8 @@ function App() {
     setAllChimera(prev => [...prev, gachaOutput]);
     console.log(gachaOutput);
   }
+  //tester variable
+  const [testSeedDecode,setTestSeedDecode] = useState(null);
   function buyAdvancedChest(){
     if(gold < 1000){ return; }
     
@@ -57,6 +59,10 @@ function App() {
     const gachaOutput = gachaCalculator("advanced");
     setAllChimera(prev => [...prev, gachaOutput]);
     console.log(gachaOutput);
+
+    //LINES BELOW ARE TESTING, DELETE ON FINISHED PRODUCT
+    setTestSeedDecode(seedDecoder(gachaOutput.seed));
+    //setTestSeedDecode(seedDecoder("013404014201015405"));
   }
 
   //PAGE RENDERING LOGIC BELOW
@@ -64,16 +70,22 @@ function App() {
   const [currentPage, setCurrentPage] = useState('Home');
 
   if (currentPage === 'Home') {
-    PageComponent = (
-      <HomePage 
-        username="Richard"
-        gold = {gold}
-        onStartStudy={() => setCurrentPage('Study')}
-      />
-    );
+
+    if (testSeedDecode && Object.keys(testSeedDecode).length > 0) {
+      PageComponent = (
+        <HomePage 
+          username="Richard"
+          gold={gold}
+          onStartStudy={() => setCurrentPage('Study')}
+          seed={testSeedDecode}
+        />
+      );
+    } else {
+      // Optionally render a loading state or default chimera
+      PageComponent = <div>Loading...</div>;
+    }
   }
-  
-  console.log(seedDecoder("002101001101001101"));
+  buyAdvancedChest();
   
   
   
