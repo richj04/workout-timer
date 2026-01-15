@@ -53,26 +53,8 @@ export default function HomePage({ username, gold, onStartStudy, seed }) {
           Start Studying
         </button>
       </div>
-
-      {/* ===== Bottom Navigation Bar ===== */}
-      <nav className="fixed bottom-0 w-full flex justify-around items-center h-16 bg-white shadow-inner">
-        {/* Each button: icon on top, text below */}
-        <NavButton icon={<FaHome />} label="Home" />
-        <NavButton icon={<FaBook />} label="Study" />
-        <NavButton icon={<FaStore />} label="Shop" />
-        <NavButton icon={<FaBoxOpen />} label="Inventory" />
-        <NavButton icon={<FaTrophy />} label="Leaderboard" />
-      </nav>
     </div>
   );
 }
 
 // ===== Helper Component for Bottom Nav Buttons =====
-function NavButton({ icon, label }) {
-  return (
-    <div className="flex flex-col items-center justify-center w-16 h-full text-gray-700 hover:text-blue-500 cursor-pointer">
-      <div className="text-3xl md:text-3xl">{icon}</div>
-      <span className="text-xs md:text-sm truncate">{label}</span>
-    </div>
-  );
-}

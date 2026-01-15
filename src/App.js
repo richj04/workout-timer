@@ -3,7 +3,10 @@ import { studyTimeToGoldSmall, studyTimeToGoldLarge, studyTimeToGoldMedium } fro
 import { streakCalculator} from './utils/streakCalculator';
 import { gachaCalculator } from './utils/gachaCalculator';
 import HomePage from './pages/HomePage';
+import ShopPage from './pages/ShopPage';
 import { seedDecoder } from './utils/seedDecoder';
+import { FaHome, FaBook, FaStore, FaBoxOpen, FaTrophy, FaCoins } from 'react-icons/fa';
+
 
 function App() {
   // ========== STATE ==========
@@ -67,9 +70,9 @@ function App() {
 
   //PAGE RENDERING LOGIC BELOW
   let PageComponent;
-  const [currentPage, setCurrentPage] = useState('Home');
+  const [currentPage, setCurrentPage] = useState('HomePage');
 
-  if (currentPage === 'Home') {
+  if (currentPage === 'HomePage') {
 
     if (testSeedDecode && Object.keys(testSeedDecode).length > 0) {
       PageComponent = (
@@ -84,7 +87,16 @@ function App() {
       // Optionally render a loading state or default chimera
       PageComponent = <div>Loading...</div>;
     }
+  }else if (currentPage === 'StudyPage') {
+
+  } else if (currentPage === 'ShopPage') {
+    PageComponent = (
+      <ShopPage
+        buyBasicChest={buyBasicChest}
+      />
+    );
   }
+
   buyAdvancedChest();
   
   
@@ -119,9 +131,27 @@ function App() {
   return (
     <div>
       {PageComponent}
+      {/* ===== Bottom Navigation Bar ===== */}
+      <nav className="fixed bottom-0 w-full flex justify-around items-center h-16 bg-white shadow-inner">
+      {/* Each button: icon on top, text below */}
+        <NavButton icon={<FaHome />} label="Home" onClick={() => setCurrentPage("HomePage")}/>
+        <NavButton icon={<FaBook />} label="Study" onClick={() => setCurrentPage("StudyPage")}/>
+        <NavButton icon={<FaStore />} label="Shop" />
+        <NavButton icon={<FaBoxOpen />} label="Inventory" />
+        <NavButton icon={<FaTrophy />} label="Leaderboard" />
+      </nav>
     </div>
     
   );
 }
 
 export default App;
+
+function NavButton({ icon, label }) {
+  return (
+    <div className="flex flex-col items-center justify-center w-16 h-full text-gray-700 hover:text-blue-500 cursor-pointer">
+      <div className="text-3xl md:text-3xl">{icon}</div>
+      <span className="text-xs md:text-sm truncate">{label}</span>
+    </div>
+  );
+}
