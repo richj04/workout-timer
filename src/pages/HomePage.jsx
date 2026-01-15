@@ -10,19 +10,6 @@ import ChimeraRenderer from '../utils/chimeraRenderer';
 export default function HomePage({ username, gold, onStartStudy, seed }) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* ===== Top Bar ===== */}
-      <div className="flex justify-between items-center p-4 bg-white shadow-md">
-        {/* Username */}
-        <div className="font-semibold text-gray-800">{username}</div>
-        {/* App Name */}
-        <h1 className="text-3xl font-bold text-gray-900">Evo Study</h1>
-        {/* Gold display */}
-        <div className="flex items-center gap-1">
-          <FaCoins className="text-yellow-500" />
-          <span className="font-medium">{gold}</span>
-        </div>
-      </div>
-
       {/* ===== Main Content ===== */}
       <div className="flex-1 flex flex-col items-center justify-center p-7 gap-6">
         
@@ -39,10 +26,7 @@ export default function HomePage({ username, gold, onStartStudy, seed }) {
 
         {/* Chimera Display Box */}
         <div className="relative w-72 h-[28rem] bg-white border rounded-lg flex items-center justify-center">
-          {/* Chimera will render here later */}
-            <ChimeraRenderer
-                seed={seed}
-            />
+          {seed != null ? <ChimeraRenderer seed={seed}/> : <h3>Unbox a Chimera!</h3>}
         </div>
 
         {/* Start Studying Button */}

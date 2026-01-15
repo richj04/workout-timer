@@ -29,7 +29,7 @@ export default function ChimeraRenderer({ seed }){
             </div>
 
             <div className="text-center space-y-1">
-                <h3 className="text-sm font-semibold">{label}</h3>
+                <h3 className="text-sm font-semibold rarity-epic">{label}</h3>
                 <h3 className="text-lg font-bold">{name}</h3>
             </div>
         </div>

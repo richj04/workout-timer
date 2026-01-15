@@ -53,6 +53,15 @@ export function seedDecoder( gachaSeed ) {
       }
     }
 
+    if (!effect) {
+      console.error(`Effect not found for key: ${effectKey}`);
+      continue; // Skip this iteration if effect not found
+    }
+    if (!species) {
+      console.error(`Species not found for key: ${speciesKey}`);
+      continue; // Skip this iteration
+    }
+
     // build display label
     const effectName =
       effect.data[effectNameMap[i]];

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { studyTimeToGoldSmall, studyTimeToGoldLarge, studyTimeToGoldMedium } from './utils/goldCalculator';
 import { streakCalculator} from './utils/streakCalculator';
 import { gachaCalculator } from './utils/gachaCalculator';
@@ -18,7 +18,7 @@ function App() {
   });
   const [displayStreak, setDisplayStreak] = useState(0);
   const [allChimera, setAllChimera] = useState([]);
-  
+  const [displaySeed, setDisplaySeed] = useState(null);
   
   // ========== FUNCTIONS ==========
 
@@ -54,7 +54,6 @@ function App() {
     console.log(gachaOutput);
   }
   //tester variable
-  const [testSeedDecode,setTestSeedDecode] = useState(null);
   function buyAdvancedChest(){
     if(gold < 1000){ return; }
     
@@ -63,41 +62,37 @@ function App() {
     setAllChimera(prev => [...prev, gachaOutput]);
     console.log(gachaOutput);
 
-    //LINES BELOW ARE TESTING, DELETE ON FINISHED PRODUCT
-    setTestSeedDecode(seedDecoder(gachaOutput.seed));
-    //setTestSeedDecode(seedDecoder("013404014201015405"));
   }
+
+  useEffect(() =>{
+    if(allChimera.length == 1){
+      setDisplaySeed(seedDecoder(allChimera[0]["seed"]));
+    }
+  }, [allChimera]);
 
   //PAGE RENDERING LOGIC BELOW
   let PageComponent;
   const [currentPage, setCurrentPage] = useState('HomePage');
 
   if (currentPage === 'HomePage') {
-
-    if (testSeedDecode && Object.keys(testSeedDecode).length > 0) {
       PageComponent = (
         <HomePage 
           username="Richard"
           gold={gold}
           onStartStudy={() => setCurrentPage('Study')}
-          seed={testSeedDecode}
-        />
-      );
-    } else {
-      // Optionally render a loading state or default chimera
-      PageComponent = <div>Loading...</div>;
-    }
+          seed={displaySeed}
+        />);
   }else if (currentPage === 'StudyPage') {
 
   } else if (currentPage === 'ShopPage') {
     PageComponent = (
       <ShopPage
         buyBasicChest={buyBasicChest}
+        buyAdvancedChest={buyAdvancedChest}
       />
     );
+    console.log("test");
   }
-
-  buyAdvancedChest();
   
   
   
@@ -130,13 +125,26 @@ function App() {
    **/
   return (
     <div>
+      {/* ===== Top Bar ===== */}
+      <div className="flex justify-between items-center p-4 bg-white shadow-md">
+        {/* Username */}
+        <div className="font-semibold text-gray-800">Richard</div>
+          <h1 className="text-3xl font-bold text-gray-900">Evo Study</h1>
+          <div className="flex items-center gap-1">
+          <FaCoins className="text-yellow-500" />
+          <span className="font-medium">{gold}</span>
+        </div>
+      </div>
+      
+      {/*Actual Page*/}
       {PageComponent}
+
       {/* ===== Bottom Navigation Bar ===== */}
       <nav className="fixed bottom-0 w-full flex justify-around items-center h-16 bg-white shadow-inner">
       {/* Each button: icon on top, text below */}
         <NavButton icon={<FaHome />} label="Home" onClick={() => setCurrentPage("HomePage")}/>
         <NavButton icon={<FaBook />} label="Study" onClick={() => setCurrentPage("StudyPage")}/>
-        <NavButton icon={<FaStore />} label="Shop" />
+        <NavButton icon={<FaStore />} label="Shop" onClick={() => setCurrentPage("ShopPage")}/>
         <NavButton icon={<FaBoxOpen />} label="Inventory" />
         <NavButton icon={<FaTrophy />} label="Leaderboard" />
       </nav>
@@ -147,9 +155,9 @@ function App() {
 
 export default App;
 
-function NavButton({ icon, label }) {
+function NavButton({ icon, label, onClick }) {
   return (
-    <div className="flex flex-col items-center justify-center w-16 h-full text-gray-700 hover:text-blue-500 cursor-pointer">
+    <div onClick={onClick} className="flex flex-col items-center justify-center w-16 h-full text-gray-700 hover:text-blue-500 cursor-pointer">
       <div className="text-3xl md:text-3xl">{icon}</div>
       <span className="text-xs md:text-sm truncate">{label}</span>
     </div>
