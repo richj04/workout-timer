@@ -29,7 +29,11 @@ export default function ChimeraRenderer({ seed }){
             </div>
 
             <div className="text-center space-y-1">
-                <h3 className="text-sm font-semibold rarity-epic">{label}</h3>
+                <div className = "flex gap-1 text-sm font-semibold">
+                    <h3 className={`rarity-${seed[0]["rarity"]}`}>{`${seed[0]["label"]}`} </h3>
+                    <h3 className={`rarity-${seed[1]["rarity"]}`}>{`${seed[1]["label"]}`} </h3>
+                    <h3 className={`rarity-${seed[2]["rarity"]}`}>{`${seed[2]["label"]}`}</h3>
+                </div>
                 <h3 className="text-lg font-bold">{name}</h3>
             </div>
         </div>

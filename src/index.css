@@ -177,7 +177,7 @@
 .rarity-legendary {
   font-weight: 700;
   position: relative;
-  background: linear-gradient(90deg, #ffffff 0%, #00e5ff 25%, #e91e63 50%, #00e5ff 75%, #ffffff 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #bbf8ff 25%, #ffffff 50%, #ffb3e9 75%, #ffffff 100%);
   background-size: 200% 100%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -185,8 +185,8 @@
   animation: legendaryColorCycle 5s linear infinite, legendaryFloat 5s ease-in-out infinite;
   /* Outline for readability - dark stroke that's always visible */
   -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.3);
-  text-stroke: 0.5px rgba(0, 0, 0, 0.3);
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 12px rgba(0, 229, 255, 0.4)) drop-shadow(0 0 16px rgba(233, 30, 99, 0.3));
+  text-stroke: 1px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 12px rgba(158, 230, 237, 0.4)) drop-shadow(0 0 16px rgba(231, 185, 207, 0.3));
   display: inline-block;
 }
 
@@ -197,7 +197,7 @@
   position: absolute;
   width: 7px;
   height: 7px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 229, 255, 0.8) 40%, rgba(233, 30, 99, 0.6) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(119, 207, 198, 0.8) 40%, rgba(219, 142, 168, 0.6) 70%, transparent 100%);
   border-radius: 50%;
   pointer-events: none;
   box-shadow: 

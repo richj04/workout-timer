@@ -4,13 +4,14 @@ import { streakCalculator} from './utils/streakCalculator';
 import { gachaCalculator } from './utils/gachaCalculator';
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
+import InventoryPage from './pages/InventoryPage';
 import { seedDecoder } from './utils/seedDecoder';
 import { FaHome, FaBook, FaStore, FaBoxOpen, FaTrophy, FaCoins } from 'react-icons/fa';
 
 
 function App() {
   // ========== STATE ==========
-  const [gold, setGold] = useState(1000);
+  const [gold, setGold] = useState(10000);
   const [streaks, setStreaks] = useState({
     small: 0,
     medium: 0,
@@ -50,7 +51,8 @@ function App() {
     
     setGold(gold - 100);
     const gachaOutput = gachaCalculator("basic");
-    setAllChimera(prev => [...prev, gachaOutput]);
+    const gachaSeed = gachaOutput["seed"];
+    setAllChimera(prev => [...prev, gachaSeed]);
     console.log(gachaOutput);
   }
   //tester variable
@@ -59,14 +61,15 @@ function App() {
     
     setGold(gold - 1000);
     const gachaOutput = gachaCalculator("advanced");
-    setAllChimera(prev => [...prev, gachaOutput]);
+    const gachaSeed = gachaOutput["seed"];
+    setAllChimera(prev => [...prev, gachaSeed]);
     console.log(gachaOutput);
 
   }
 
   useEffect(() =>{
     if(allChimera.length == 1){
-      setDisplaySeed(seedDecoder(allChimera[0]["seed"]));
+      setDisplaySeed(seedDecoder(allChimera[0]));
     }
   }, [allChimera]);
 
@@ -84,7 +87,7 @@ function App() {
         />);
   }else if (currentPage === 'StudyPage') {
 
-  } else if (currentPage === 'ShopPage') {
+  }else if (currentPage === 'ShopPage') {
     PageComponent = (
       <ShopPage
         buyBasicChest={buyBasicChest}
@@ -92,6 +95,13 @@ function App() {
       />
     );
     console.log("test");
+  }else if (currentPage === 'InventoryPage') {
+    PageComponent = (
+      <InventoryPage 
+        allChimera={allChimera}
+        setDisplaySeed={setDisplaySeed}
+      />
+    );
   }
   
   
@@ -145,7 +155,7 @@ function App() {
         <NavButton icon={<FaHome />} label="Home" onClick={() => setCurrentPage("HomePage")}/>
         <NavButton icon={<FaBook />} label="Study" onClick={() => setCurrentPage("StudyPage")}/>
         <NavButton icon={<FaStore />} label="Shop" onClick={() => setCurrentPage("ShopPage")}/>
-        <NavButton icon={<FaBoxOpen />} label="Inventory" />
+        <NavButton icon={<FaBoxOpen />} label="Inventory" onClick={() => setCurrentPage("InventoryPage")}/>
         <NavButton icon={<FaTrophy />} label="Leaderboard" />
       </nav>
     </div>
