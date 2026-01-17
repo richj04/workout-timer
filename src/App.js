@@ -87,7 +87,11 @@ function App() {
     />);
   }else if (currentPage === 'StudyPage') {
     PageComponent = (
-      <StudyPage />
+      <StudyPage 
+        finishSmallStudy={finishSmallStudy}
+        finishMediumStudy={finishMediumStudy}
+        finishLargeStudy={finishLargeStudy}
+      />
     );
   }else if (currentPage === 'ShopPage') {
     PageComponent = (
