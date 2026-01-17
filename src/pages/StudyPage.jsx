@@ -1,73 +1,65 @@
 import React from 'react';
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect } from 'react';
 
+export default function StudyPage({ finishSmallStudy, finishMediumStudy, finishLargeStudy }) {
+  const [selectedMode, setSelectedMode] = useState(null);
+  const [studyTime, setStudyTime] = useState(0);
 
-export default function StudyPage({ finishSmallStudy, finishMediumStudy, finishLargeStudy }){
-    const [selectedMode, setSelectedMode] = useState(null);
-    const [studyTime, setStudyTime] = useState(0);
+  if (selectedMode) {
+    const reward =
+      selectedMode === 'sprint'
+        ? finishSmallStudy
+        : selectedMode === 'focus'
+        ? finishMediumStudy
+        : selectedMode === 'deep'
+        ? finishLargeStudy
+        : null;
 
-    if (selectedMode) {
-        const reward = selectedMode === 'sprint' ? finishSmallStudy :
-        selectedMode === 'focus' ? finishMediumStudy : selectedMode === 'deep' ? finishLargeStudy : null;
+    return <StudyTimer initialTime={studyTime} reward={reward} />;
+  }
 
-        return <StudyTimer initialTime={studyTime} reward={reward} />;
-    }
-
-    return(
-        <div className="flex flex-col items-center">
-            <StudyButtons 
-                onSelectMode={(mode, time) => {
-                    setSelectedMode(mode);
-                    setStudyTime(time);
-                }} 
-            />
-        </div>
-    );
+  return (
+    <div className="mx-auto w-full max-w-4xl px-4 pb-24 pt-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-slate-900">Study</h1>
+        <p className="text-sm text-slate-600">Choose a focus mode to start the timer.</p>
+      </div>
+      <StudyButtons
+        onSelectMode={(mode, time) => {
+          setSelectedMode(mode);
+          setStudyTime(time);
+        }}
+      />
+    </div>
+  );
 }
 
-export function StudyButtons({ onSelectMode }){
-    return(
-    <div className="flex flex-col gap-4 w-full max-w-md">
-        <button className="group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 
-            hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl p-6 
-            transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95
-            border border-blue-400/20" 
-            onClick={() => onSelectMode('sprint', 10)}>
-            <div className="flex flex-col items-center gap-1">
-            <h1 className="text-2xl font-bold">Sprint</h1>
-            <h2 className="text-sm opacity-90">15 minutes on / 5 minutes break</h2>
-            </div>
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 
-            transition-opacity duration-300"></div>
+export function StudyButtons({ onSelectMode }) {
+  const modes = [
+    { key: 'sprint', title: 'Sprint', detail: '15 minutes on / 5 minutes break', time: 10, badge: '10 min' },
+    { key: 'focus', title: 'Focus', detail: '25 minutes on / 5 minutes break', time: 25 * 60, badge: '25 min' },
+    { key: 'deep', title: 'Deep', detail: '60 minutes on / 15 minutes break', time: 60 * 60, badge: '60 min' },
+  ];
+
+  return (
+    <div className="grid gap-4">
+      {modes.map((mode) => (
+        <button
+          key={mode.key}
+          className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-white/80 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          onClick={() => onSelectMode(mode.key, mode.time)}
+        >
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900">{mode.title}</h2>
+            <p className="text-sm text-slate-500">{mode.detail}</p>
+          </div>
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 transition group-hover:bg-slate-900 group-hover:text-white">
+            {mode.badge}
+          </span>
         </button>
-        
-        <button className="group relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 
-            hover:from-purple-600 hover:to-purple-700 text-white rounded-2xl p-6 
-            transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95
-            border border-purple-400/20"
-            onClick={() => onSelectMode('focus', 25 * 60)}>
-            <div className="flex flex-col items-center gap-1">
-            <h1 className="text-2xl font-bold">Focus</h1>
-            <h2 className="text-sm opacity-90">25 minutes on / 5 minutes break</h2>
-            </div>
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 
-            transition-opacity duration-300"></div>
-        </button>
-        
-        <button className="group relative overflow-hidden bg-gradient-to-br from-indigo-500 to-indigo-600 
-            hover:from-indigo-600 hover:to-indigo-700 text-white rounded-2xl p-6 
-            transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95
-            border border-indigo-400/20"
-            onClick={() => onSelectMode('deep', 60 * 60)}>
-            <div className="flex flex-col items-center gap-1">
-            <h1 className="text-2xl font-bold">Deep</h1>
-            <h2 className="text-sm opacity-90">60 minutes on / 15 minutes break</h2>
-            </div>
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 
-            transition-opacity duration-300"></div>
-        </button>
+      ))}
     </div>
-    );
+  );
 }
 
 function StudyTimer({ initialTime, reward }) {
@@ -75,18 +67,16 @@ function StudyTimer({ initialTime, reward }) {
   const [isBreak, setIsBreak] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
-  const breakTime = initialTime === 10 ? 5 : 
-                    initialTime === 25 * 60 ? 5 * 60 : 
-                    15 * 60;
+  const breakTime = initialTime === 10 ? 5 : initialTime === 25 * 60 ? 5 * 60 : 15 * 60;
 
-    useEffect(() => {
-        if (isComplete) {
-            reward();
-        }
-    }, [isComplete]);
+  useEffect(() => {
+    if (isComplete) {
+      reward();
+    }
+  }, [isComplete, reward]);
 
-    useEffect(() => {
-    if (isComplete) return; // Don't run if complete
+  useEffect(() => {
+    if (isComplete) return;
 
     if (timeLeft <= 0) {
       if (!isBreak) {
@@ -95,16 +85,16 @@ function StudyTimer({ initialTime, reward }) {
       } else {
         setIsComplete(true);
       }
-      return; // Don't set up interval
+      return;
     }
-    
+
     const interval = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) return 0; // Stop at 0, don't go negative
+      setTimeLeft((prev) => {
+        if (prev <= 1) return 0;
         return prev - 1;
       });
     }, 1000);
-    
+
     return () => clearInterval(interval);
   }, [timeLeft, isBreak, breakTime, isComplete]);
 
@@ -113,32 +103,32 @@ function StudyTimer({ initialTime, reward }) {
 
   if (isComplete) {
     return (
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="text-3xl font-bold">Session Complete! 🎉</h1>
-        <p>Great work! Ready for another round?</p>
-        <button 
-          className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg"
+      <div className="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white/80 p-6 text-center shadow-sm">
+        <h1 className="text-2xl font-semibold text-slate-900">Session complete</h1>
+        <p className="mt-2 text-sm text-slate-600">Great work. Ready for another round?</p>
+        <button
+          className="mt-4 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
           onClick={() => {
             setTimeLeft(initialTime);
             setIsBreak(false);
             setIsComplete(false);
           }}
         >
-          Start Another Set
+          Start another set
         </button>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <h2 className="text-xl font-semibold">
-        {isBreak ? '☕ Break Time' : '📚 Focus Time'}
-      </h2>
-      <div className="text-6xl font-bold">
+    <div className="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white/80 p-6 text-center shadow-sm">
+      <div className="text-xs uppercase tracking-[0.2em] text-slate-500">
+        {isBreak ? 'Break time' : 'Focus time'}
+      </div>
+      <div className="mt-4 text-6xl font-semibold tabular-nums text-slate-900">
         {minutes}:{seconds < 10 ? '0' : ''}{seconds}
       </div>
-      <p className="text-sm opacity-70">No pausing - stay focused!</p>
+      <p className="mt-3 text-sm text-slate-500">No pausing. Stay focused.</p>
     </div>
   );
 }
