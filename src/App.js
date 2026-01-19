@@ -9,8 +9,12 @@ import StudyPage from './pages/StudyPage';
 import { seedDecoder } from './utils/seedDecoder';
 import { FaHome, FaBook, FaStore, FaBoxOpen, FaCoins } from 'react-icons/fa';
 
+const API_BASE = 'http://localhost:8000';
+
 export function App() {
-  const [gold, setGold] = useState(10000);
+  const [googleId, setGoogleId] = useState(null);
+  const [username, setUsername] = useState('Guest');
+  const [gold, setGold] = useState(1000);
   const [streaks, setStreaks] = useState({
     small: 0,
     medium: 0,
@@ -20,56 +24,211 @@ export function App() {
   const [allChimera, setAllChimera] = useState([]);
   const [displaySeed, setDisplaySeed] = useState(null);
 
+  const loadUserData = async (id) => {
+    try {
+      const [userRes, streakRes, chimeraRes] = await Promise.all([
+        fetch(`${API_BASE}/api/user/${id}`),
+        fetch(`${API_BASE}/api/streaks/${id}`),
+        fetch(`${API_BASE}/api/chimera/${id}`),
+      ]);
+
+      if (userRes.status === 404) {
+        localStorage.removeItem('user');
+        setGoogleId(null);
+        setUsername('Guest');
+        setGold(1000);
+        setStreaks({ small: 0, medium: 0, large: 0 });
+        setAllChimera([]);
+        setDisplaySeed(null);
+        return;
+      }
+
+      if (userRes.ok) {
+        const data = await userRes.json();
+        if (data.user) {
+          setUsername(data.user.name || 'Guest');
+          setGold(Number.isFinite(data.user.gold) ? data.user.gold : 0);
+        }
+      }
+
+      if (streakRes.ok) {
+        const data = await streakRes.json();
+        if (data.streaks) {
+          setStreaks({
+            small: data.streaks.small || 0,
+            medium: data.streaks.medium || 0,
+            large: data.streaks.large || 0,
+          });
+        }
+      }
+
+      if (chimeraRes.ok) {
+        const data = await chimeraRes.json();
+        setAllChimera(Array.isArray(data.chimera) ? data.chimera : []);
+      }
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) return;
+
+    try {
+      const parsed = JSON.parse(storedUser);
+      if (parsed?.google_id) {
+        setGoogleId(parsed.google_id);
+        setUsername(parsed.name || 'Guest');
+        setGold(Number.isFinite(parsed.gold) ? parsed.gold : 0);
+        loadUserData(parsed.google_id);
+      }
+    } catch (error) {
+      console.error('Failed to parse stored user:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!googleId) return;
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        google_id: googleId,
+        name: username,
+        gold,
+      })
+    );
+  }, [googleId, username, gold]);
+
+  function handleUserLogin(userData) {
+    if (!userData?.google_id) return;
+    setGoogleId(userData.google_id);
+    setUsername(userData.name || 'Guest');
+    setGold(Number.isFinite(userData.gold) ? userData.gold : 0);
+    setStreaks({ small: 0, medium: 0, large: 0 });
+    setAllChimera([]);
+    setDisplaySeed(null);
+    loadUserData(userData.google_id);
+  }
+
+  async function syncGold(nextGold) {
+    if (!googleId) return;
+    try {
+      await fetch(`${API_BASE}/api/user/gold`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ google_id: googleId, gold: nextGold }),
+      });
+    } catch (error) {
+      console.error('Failed to update gold:', error);
+    }
+  }
+
+  async function syncStreaks(nextStreaks) {
+    if (!googleId) return;
+    try {
+      await fetch(`${API_BASE}/api/streaks/${googleId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(nextStreaks),
+      });
+    } catch (error) {
+      console.error('Failed to update streaks:', error);
+    }
+  }
+
+  async function addChimera(seed) {
+    if (!googleId) return;
+    try {
+      await fetch(`${API_BASE}/api/chimera`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ google_id: googleId, seed }),
+      });
+    } catch (error) {
+      console.error('Failed to save chimera:', error);
+    }
+  }
+
   function finishSmallStudy() {
     const newStreaks = streakCalculator(streaks, 'small');
+    const newGold = gold + studyTimeToGoldSmall(newStreaks.small);
     setDisplayStreak(newStreaks.small);
     setStreaks(newStreaks);
-    setGold(gold + studyTimeToGoldSmall(newStreaks.small));
+    setGold(newGold);
+    syncGold(newGold);
+    syncStreaks(newStreaks);
   }
 
   function finishMediumStudy() {
     const newStreaks = streakCalculator(streaks, 'medium');
+    const newGold = gold + studyTimeToGoldMedium(newStreaks.medium);
     setDisplayStreak(newStreaks.medium);
     setStreaks(newStreaks);
-    setGold(gold + studyTimeToGoldMedium(newStreaks.medium));
+    setGold(newGold);
+    syncGold(newGold);
+    syncStreaks(newStreaks);
   }
 
   function finishLargeStudy() {
     const newStreaks = streakCalculator(streaks, 'large');
+    const newGold = gold + studyTimeToGoldLarge(newStreaks.large);
     setDisplayStreak(newStreaks.large);
     setStreaks(newStreaks);
-    setGold(gold + studyTimeToGoldLarge(newStreaks.large));
+    setGold(newGold);
+    syncGold(newGold);
+    syncStreaks(newStreaks);
   }
 
   function buyBasicChest() {
+    if (!googleId) {
+      alert('Please sign in before opening chests.');
+      return;
+    }
+
     if (gold < 100) {
       return;
     }
 
-    setGold(gold - 100);
+    const newGold = gold - 100;
+    setGold(newGold);
     const gachaOutput = gachaCalculator('basic');
     const gachaSeed = gachaOutput['seed'];
     setAllChimera((prev) => [...prev, gachaSeed]);
-    console.log(gachaOutput);
+    syncGold(newGold);
+    addChimera(gachaSeed);
   }
 
   function buyAdvancedChest() {
+    if (!googleId) {
+      alert('Please sign in before opening chests.');
+      return;
+    }
+
     if (gold < 1000) {
       return;
     }
 
-    setGold(gold - 1000);
+    const newGold = gold - 1000;
+    setGold(newGold);
     const gachaOutput = gachaCalculator('advanced');
     const gachaSeed = gachaOutput['seed'];
     setAllChimera((prev) => [...prev, gachaSeed]);
-    console.log(gachaOutput);
+    syncGold(newGold);
+    addChimera(gachaSeed);
   }
 
   useEffect(() => {
-    if (allChimera.length == 1) {
+    if (allChimera.length > 0 && !displaySeed) {
       setDisplaySeed(seedDecoder(allChimera[0]));
     }
-  }, [allChimera]);
+  }, [allChimera, displaySeed]);
 
   let PageComponent;
   const [currentPage, setCurrentPage] = useState('HomePage');
@@ -77,10 +236,11 @@ export function App() {
   if (currentPage === 'HomePage') {
     PageComponent = (
       <HomePage
-        username="Richard"
+        username={username}
         gold={gold}
         onStartStudy={() => setCurrentPage('StudyPage')}
         seed={displaySeed}
+        onUserLogin={handleUserLogin}
       />
     );
   } else if (currentPage === 'StudyPage') {
@@ -95,7 +255,6 @@ export function App() {
     PageComponent = (
       <ShopPage buyBasicChest={buyBasicChest} buyAdvancedChest={buyAdvancedChest} buyGold={setGold} />
     );
-    console.log('test');
   } else if (currentPage === 'InventoryPage') {
     PageComponent = <InventoryPage allChimera={allChimera} setDisplaySeed={setDisplaySeed} />;
   }
@@ -106,7 +265,7 @@ export function App() {
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
           <div>
             <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Welcome</div>
-            <div className="text-sm font-semibold text-slate-900">Richard</div>
+            <div className="text-sm font-semibold text-slate-900">{username}</div>
           </div>
           <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">Evo Study</h1>
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700">
