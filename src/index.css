@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .action-card {
+    @apply rounded-2xl border border-slate-200 bg-white/80 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:shadow-sm;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20;
+  }
+
+  .primary-button {
+    @apply rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition;
+    @apply hover:bg-slate-800 active:translate-y-px active:shadow-sm;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30;
+  }
+
+  .secondary-button {
+    @apply rounded-full border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition;
+    @apply hover:border-slate-400 active:translate-y-px active:shadow-sm;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20;
+  }
+}
+
 /* ===== RARITY TEXT EFFECTS ===== */
 
 /* Common: No special styling - clean default text */

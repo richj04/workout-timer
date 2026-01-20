@@ -1,11 +1,11 @@
 import React from 'react';
+import { FaCoins } from 'react-icons/fa';
 
 export default function ShopPage({ buyBasicChest, buyAdvancedChest, buyGold }) {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 pb-24 pt-6">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-slate-900">Shop</h1>
-        <p className="text-sm text-slate-500">Spend gold on loot boxes and upgrades.</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -15,16 +15,17 @@ export default function ShopPage({ buyBasicChest, buyAdvancedChest, buyGold }) {
               <h2 className="text-lg font-semibold text-slate-900">Basic Box</h2>
               <p className="text-sm text-slate-600">Reliable starter pulls.</p>
             </div>
-            <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700">
+              <FaCoins className="text-amber-500" />
               100
-            </span>
+            </div>
           </div>
           <p className="mt-3 text-sm text-slate-500">
-            Balanced mix of creatures to build your first collection.
+            Your probably going to pull a common...
           </p>
           <button
             onClick={() => buyBasicChest()}
-            className="mt-4 w-full rounded-full bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="primary-button mt-4 w-full px-4"
           >
             Buy basic box
           </button>
@@ -36,16 +37,17 @@ export default function ShopPage({ buyBasicChest, buyAdvancedChest, buyGold }) {
               <h2 className="text-lg font-semibold text-slate-900">Premium Box</h2>
               <p className="text-sm text-slate-600">Higher chance of rare pulls.</p>
             </div>
-            <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
-              1,000
-            </span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700">
+              <FaCoins className="text-amber-500" />
+              1000
+            </div>
           </div>
           <p className="mt-3 text-sm text-slate-500">
-            Built for collectors who want stronger merges.
+            Worth it :)
           </p>
           <button
             onClick={() => buyAdvancedChest()}
-            className="mt-4 w-full rounded-full bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="primary-button mt-4 w-full px-4"
           >
             Buy premium box
           </button>
@@ -55,19 +57,20 @@ export default function ShopPage({ buyBasicChest, buyAdvancedChest, buyGold }) {
       <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-white/70 p-5 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900">Support</h2>
-            <p className="text-sm text-slate-600">For quick testing and demos.</p>
+            <h2 className="text-lg font-semibold text-slate-900">Support Me</h2>
+            <p className="text-sm text-slate-600">test</p>
           </div>
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-            Experimental
-          </span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700">
+            <FaCoins className="text-amber-500" />
+            1 USD
+          </div>
         </div>
         <p className="mt-3 text-sm text-slate-500">
-          Add a large amount of gold for stress testing the economy.
+          Adding Stripe integration soon.
         </p>
         <button
           onClick={() => buyGold(9007199254740991)}
-          className="mt-4 w-full rounded-full border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400"
+          className="secondary-button mt-4 w-full"
         >
           Add infinite gold
         </button>

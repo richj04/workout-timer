@@ -24,7 +24,7 @@ export default function InventoryPage({ allChimera, setDisplaySeed }) {
             <button
               type="button"
               key={index}
-              className="group w-full rounded-2xl border border-slate-200 bg-white/80 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="action-card group w-full p-4"
               onClick={() => setDisplaySeed(chimera)}
             >
               <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Chimera {index + 1}</div>

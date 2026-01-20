@@ -46,7 +46,7 @@ export function StudyButtons({ onSelectMode }) {
       {modes.map((mode) => (
         <button
           key={mode.key}
-          className="group flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-white/80 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          className="action-card group flex w-full items-center justify-between p-5"
           onClick={() => onSelectMode(mode.key, mode.time)}
         >
           <div>
@@ -107,7 +107,7 @@ function StudyTimer({ initialTime, reward }) {
         <h1 className="text-2xl font-semibold text-slate-900">Session complete</h1>
         <p className="mt-2 text-sm text-slate-600">Great work. Ready for another round?</p>
         <button
-          className="mt-4 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+          className="primary-button mt-4 px-6"
           onClick={() => {
             setTimeLeft(initialTime);
             setIsBreak(false);

@@ -241,6 +241,7 @@ export function App() {
         onStartStudy={() => setCurrentPage('StudyPage')}
         seed={displaySeed}
         onUserLogin={handleUserLogin}
+        isSignedIn={Boolean(googleId)}
       />
     );
   } else if (currentPage === 'StudyPage') {
@@ -259,6 +260,8 @@ export function App() {
     PageComponent = <InventoryPage allChimera={allChimera} setDisplaySeed={setDisplaySeed} />;
   }
 
+  const isInventoryPage = currentPage === 'InventoryPage';
+
   return (
     <div className="flex min-h-screen flex-col overflow-hidden bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/80 backdrop-blur">
@@ -275,7 +278,13 @@ export function App() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto pb-20 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <main
+        className={`flex-1 pb-20 ${
+          isInventoryPage
+            ? 'overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+            : 'overflow-hidden'
+        }`}
+      >
         {PageComponent}
       </main>
 
