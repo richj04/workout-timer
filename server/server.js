@@ -5,7 +5,10 @@ const db = require('./database'); // Import database
 const app = express();
 const PORT = 8000;
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://study-timer.vercel.app'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Test route (same as before)

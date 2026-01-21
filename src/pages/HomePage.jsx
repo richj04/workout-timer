@@ -12,7 +12,7 @@ export default function HomePage({ username, gold, onStartStudy, seed, onUserLog
     const decoded = jwtDecode(credentialResponse.credential);
 
     try {
-      const response = await fetch('http://localhost:8000/api/user/login', {
+      const response = await fetch('https://study-timer-backend.onrender.com/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

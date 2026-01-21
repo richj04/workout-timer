@@ -9,7 +9,7 @@ import StudyPage from './pages/StudyPage';
 import { seedDecoder } from './utils/seedDecoder';
 import { FaHome, FaBook, FaStore, FaBoxOpen, FaCoins } from 'react-icons/fa';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://study-timer-backend.onrender.com';
 
 export function App() {
   const [googleId, setGoogleId] = useState(null);
