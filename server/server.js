@@ -6,9 +6,15 @@ const app = express();
 const PORT = 8000;
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://study-timer.vercel.app'],
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173', 
+    'https://workout-timer-seven-beta.vercel.app'
+  ],
   credentials: true
 }));
+
+
 app.use(express.json());
 
 // Test route (same as before)
