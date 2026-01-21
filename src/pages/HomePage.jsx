@@ -3,10 +3,6 @@ import ChimeraRenderer from '../utils/chimeraRenderer';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 
-// Props:
-// - username (string)
-// - gold (number)
-// - onStartStudy (function) -> navigate to Study page
 export default function HomePage({ username, gold, onStartStudy, seed, onUserLogin, isSignedIn }) {
   const handleLoginSuccess = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential);
@@ -46,11 +42,10 @@ export default function HomePage({ username, gold, onStartStudy, seed, onUserLog
         <section className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-              Grow a chimera while you focus
+              Evo Study - A gamified pomodoro study app
             </h1>
             <p className="max-w-xl text-sm text-slate-600">
-              Track your study sessions, unlock creatures, and keep your streak alive with a calm,
-              minimal routine.
+              Study for gold, use gold for unboxings, unbox rare chimeras for aura!
             </p>
           </div>
 
