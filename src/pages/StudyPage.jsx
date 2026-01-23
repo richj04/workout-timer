@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function StudyPage({ finishSmallStudy, finishMediumStudy, finishLargeStudy }) {
   const [selectedMode, setSelectedMode] = useState(null);
@@ -36,7 +36,7 @@ export default function StudyPage({ finishSmallStudy, finishMediumStudy, finishL
 
 export function StudyButtons({ onSelectMode }) {
   const modes = [
-    { key: 'sprint', title: 'Sprint', detail: '15 minutes on / 5 minutes break', time: 10, badge: '10 min' },
+    { key: 'sprint', title: 'Sprint', detail: '15 minutes on / 5 minutes break', time: 10 * 60, badge: '10 min' },
     { key: 'focus', title: 'Focus', detail: '25 minutes on / 5 minutes break', time: 25 * 60, badge: '25 min' },
     { key: 'deep', title: 'Deep', detail: '60 minutes on / 15 minutes break', time: 60 * 60, badge: '60 min' },
   ];
@@ -66,11 +66,13 @@ function StudyTimer({ initialTime, reward }) {
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isBreak, setIsBreak] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const hasRewarded = useRef(false);
 
-  const breakTime = initialTime === 10 ? 5 : initialTime === 25 * 60 ? 5 * 60 : 15 * 60;
+  const breakTime = initialTime === 10 * 60 ? 5 * 60 : initialTime === 25 * 60 ? 5 * 60 : 15 * 60;
 
   useEffect(() => {
-    if (isComplete) {
+    if (isComplete && !hasRewarded.current) {
+      hasRewarded.current = true;
       reward();
     }
   }, [isComplete, reward]);
@@ -112,6 +114,7 @@ function StudyTimer({ initialTime, reward }) {
             setTimeLeft(initialTime);
             setIsBreak(false);
             setIsComplete(false);
+            hasRewarded.current = false;
           }}
         >
           Start another set
